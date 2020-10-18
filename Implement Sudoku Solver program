@@ -1,0 +1,90 @@
+#include<iostream>
+#include<cmath>
+using namespace std;
+bool canPlace(int sudoku[][9],int i,int j,int n,int num)
+{
+	for(int k=0;k<n;k++)
+	{
+		if(sudoku[i][k]==num or sudoku[k][j]==num)
+			return false;
+	}
+
+	int root=sqrt(n);
+	int x=(i/root)*root;
+	int y=(j/root)*root;
+
+	for(int k=x;k<x+root;k++)
+	{
+		for(int l=y;l<y+root;l++)
+		{
+			if(sudoku[k][l]==num)
+				return false;
+		}
+	}
+	return true;
+}
+bool solve(int sudoku[][9],int i,int j,int n)
+{
+	if(i==n)
+	{
+		for(int k=0;k<n;k++){
+			for(int l=0;l<n;l++)
+			{
+				cout<<sudoku[k][l]<<" ";
+			}
+			cout<<endl;
+		}
+
+		return true;
+	}
+
+	if(j==n)
+		return solve(sudoku,i+1,0,n);
+	if(sudoku[i][j]!=0)
+		return solve(sudoku,i,j+1,n);
+
+	for(int no=1;no<=9;no++)
+	{
+		if(canPlace(sudoku,i,j,n,no))
+		{
+			sudoku[i][j]=no;
+
+			if(solve(sudoku,i,j+1,n))
+				return true;
+
+		}
+	}
+	sudoku[i][j]=0;
+	
+	return false;
+
+
+
+
+}
+int main()
+{
+
+	int sudoku[9][9]=
+	{
+		{5,3,0,0,7,0,0,0,0},
+		{6,0,0,1,9,5,0,0,0},
+		{0,9,8,0,0,0,0,6,0},
+		{8,0,0,0,6,0,0,0,3},
+		{4,0,0,8,0,3,0,0,1},
+		{7,0,0,0,2,0,0,0,6},
+		{0,6,0,0,0,0,2,8,0},
+		{0,0,0,4,1,9,0,0,5},
+		{0,0,0,0,8,0,0,7,9}
+	};
+
+	cout<<solve(sudoku,0,0,9);
+
+
+
+
+
+	return 0;
+
+
+}
