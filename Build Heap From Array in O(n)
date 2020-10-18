@@ -1,0 +1,32 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+void heapify(int idx,vector<int> &v){
+	
+	int min_idx=idx;
+	int last=v.size()-1;
+	
+	int left_child=2*idx;
+	int right_child=2*idx+1;
+	
+	if(left_child<=last && v[left_child]>v[min_idx]){
+		min_idx=left_child;
+	}
+	if(right_child<=last && v[right_child]>v[min_idx]){
+		min_idx=right_child;
+	}
+	if(idx!=min_idx){
+		swap(v[idx],v[min_idx]);
+		heapify(min_idx,v);
+	}
+}
+int main(){
+	vector<int> v{-1,4,2,6,5,9,10};
+	for(int i=v.size()/2;i>=1;i--){
+		heapify(i,v);
+	}
+	for(auto itr=v.begin();itr!=v.end();itr++){
+		cout<<*itr<<" ";
+	}
+}
